@@ -2,12 +2,12 @@
 # we want to find x such that f(x) = 0 
 # iteration xnext = xpre - (f(xpre)/f'(xpre));
 import numpy as np
+from differentiation_methods.finite_differences import finite_differences
 
 def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
     x_old = np.array(x_guess, dtype=float)
     G_x = G(x_old)
-    JG_x = JG(x_old)
-    isScalar = np.isscalar(G_x) and np.isscalar(JG_x)
+    isScalar = np.isscalar(G_x) 
 
     residuals = []
 
@@ -46,8 +46,7 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
             if JG is not None:
                 JG_x = JG(x_old)
             else:
-                # JG_x = finiteDifference()
-                JG_x = 0
+                JG_x = finite_differences(G, x_old)
                 
 
             #check if jacobian is singular G = JG*Δx  ( y = y'*dx )
