@@ -9,6 +9,8 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
     JG_x = JG(x_old)
     isScalar = np.isscalar(G_x) and np.isscalar(JG_x)
 
+    residuals = []
+
     if isScalar:
         for i in range(1,max_iter):
             G_x = G(x_old)
@@ -30,8 +32,24 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
     else:
         for i in range(1,max_iter):
             G_x = G(x_old)
-            JG_x = JG(x_old)
             
+            
+            # residual, since we want x: G(x) = 0 the residual is equal to G(x)
+            residual_norm = np.linalg.norm(G_x, ord=2)
+            residuals.append(residual_norm)
+            #stop when residual close to 0
+            if residual_norm < tol:
+                print(f"Converged in {i} iterations.")
+                return x_old
+
+            # if jacobian is not provided then approximate it
+            if JG is not None:
+                JG_x = JG(x_old)
+            else:
+                # JG_x = finiteDifference()
+                JG_x = 0
+                
+
             #check if jacobian is singular G = JG*Δx  ( y = y'*dx )
             # print("G_x")
             # print(G_x)
@@ -40,7 +58,6 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
             
             try:
                 Dx = np.linalg.solve(JG_x, G_x)
-                # Dx = np.array([1,1])
             except np.linalg.LinAlgError:
                 print("Jacobian is singular or ill conditioned")
 
@@ -49,7 +66,7 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
             print(f"Iteration {i}: x_new = {x_new}")
 
             if np.linalg.norm(Dx,ord=np.inf) < tol:
-                print(f"Converged in {i+1} iterations.")
+                print(f"Converged in {i} iterations.")
                 return x_new
             
             x_old = x_new 
@@ -58,17 +75,9 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
     print("Exceeded maximum iterations. No solution found.")
     return None
 
-
-
-
-# def newton_raphson():
-#     y_new = 0
-
-#     return y_new
-
-
-
  
+
+#SIMPLE TESTs
 
 # fun = lambda x: x**2 - 2
 # funDer = lambda x: 2*x
