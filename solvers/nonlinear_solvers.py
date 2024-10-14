@@ -26,21 +26,21 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
 
             if np.abs(Dx) < tol:
                 print(f"Converged in {i+1} iterations.")
-                return x_new
+                return x_new, residuals
             
             x_old = x_new 
     else:
         for i in range(1,max_iter):
             G_x = G(x_old)
             
-            
             # residual, since we want x: G(x) = 0 the residual is equal to G(x)
             residual_norm = np.linalg.norm(G_x, ord=2)
             residuals.append(residual_norm)
+
             #stop when residual close to 0
             if residual_norm < tol:
-                print(f"Converged in {i} iterations.")
-                return x_old
+                # print(f"Converged in {i} iterations.")
+                return x_old, residuals
 
             # if jacobian is not provided then approximate it
             if JG is not None:
@@ -60,20 +60,22 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
                 Dx = np.linalg.solve(JG_x, G_x)
             except np.linalg.LinAlgError:
                 print("Jacobian is singular or ill conditioned")
-
+                #use pseudo inverse
+                Dx = np.linalg.lstsq(JG_x, G_x, rcond=None)[0]
+                print("Using least squares solution for Dx.")
             
             x_new = x_old - Dx
-            print(f"Iteration {i}: x_new = {x_new}")
+            # print(f"Iteration {i}: x_new = {x_new}")
 
             if np.linalg.norm(Dx,ord=np.inf) < tol:
-                print(f"Converged in {i} iterations.")
-                return x_new
+                # print(f"Converged in {i} iterations.")
+                return x_new, residuals
             
             x_old = x_new 
     
 
     print("Exceeded maximum iterations. No solution found.")
-    return None
+    return None, residuals
 
  
 

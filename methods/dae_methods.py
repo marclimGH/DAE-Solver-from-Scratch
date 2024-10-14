@@ -18,7 +18,7 @@ def backward_euler_dae(F, JF, t0, y0, t_end, dt):
         def JG(y_new):
             return JF(t_new, y_new, (y_new - y_old) / dt, dt)
 
-        y_new = newtonsmethod(G, JG, y_old)
+        y_new, residuals = newtonsmethod(G, JG, y_old)
         y_values.append(y_new)
 
-    return t_values, y_values
+    return t_values, y_values, residuals
