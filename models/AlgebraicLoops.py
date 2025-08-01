@@ -1,4 +1,4 @@
-# same system modeled with and without algrebraic loops
+# same system modeled with and without algebraic loops
 
 import numpy as np
 
