@@ -78,13 +78,14 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
 
  
 
-#SIMPLE TESTs
-
-# fun = lambda x: x**2 - 2
-# funDer = lambda x: 2*x
-# x0 =0.1
-
 if __name__ == "__main__":
+    # SIMPLE TESTs
+
+    # fun = lambda x: x**2 - 2
+    # funDer = lambda x: 2*x
+    # x0 =0.1
+
+    # Example usage
     fun = lambda x: np.array([
         x[0]**2 + x[1]**2 - 4,
         x[0] - x[1]
