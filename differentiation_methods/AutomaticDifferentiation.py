@@ -23,7 +23,7 @@ primitive_rules = {
 #vector jacobian product
 def vjp(chain, primal):
     
-    #primal pass, goes through each operation in the chain and saves the pullback accordigly
+    #primal pass, goes through each operation in the chain and saves the pullback accordingly
     #pullback chain
     pulllback_stack = []
     current_value = primal  #primal position where we want to evaluate tha chain 
