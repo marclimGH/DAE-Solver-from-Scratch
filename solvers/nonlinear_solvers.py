@@ -84,21 +84,21 @@ def newtonsmethod(G, JG, x_guess,  tol=1e-6, max_iter = 100):
 # funDer = lambda x: 2*x
 # x0 =0.1
 
-fun = lambda x: np.array([
-    x[0]**2 + x[1]**2 - 4,
-    x[0] - x[1]
-])
+if __name__ == "__main__":
+    fun = lambda x: np.array([
+        x[0]**2 + x[1]**2 - 4,
+        x[0] - x[1]
+    ])
 
-funDer = lambda x: np.array([
-    [2*x[0], 2*x[1]],
-    [1, -1]
-])
-x0 = np.array([0.1, 0.1])
+    funDer = lambda x: np.array([
+        [2*x[0], 2*x[1]],
+        [1, -1]
+    ])
 
+    x0 = np.array([0.1, 0.1])
 
-
-res = newtonsmethod(fun,funDer, x0)
-print(f"res is {res}")
+    res = newtonsmethod(fun, funDer, x0)
+    print(f"res is {res}")
 
 
  
